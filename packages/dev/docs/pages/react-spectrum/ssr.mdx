@@ -436,4 +436,31 @@ module.exports = withTM({
 
 ## Remix
 
-[Remix](https://remix.run) is a full-stack React framework with nested routing. To configure Remix to load React Spectrum styles, visit the [CSS Side-Effect Imports](https://remix.run/docs/en/main/guides/styling#md-css-side-effect-imports) section of the Remix docs.
+[Remix](https://remix.run) is a full-stack React framework with nested routing.
+
+To configure Remix to load React Spectrum styles, CSS Side-Effect Imports is required, and [Remix Vite](https://remix.run/docs/en/main/future/vite) has built-in support for it.
+
+However, to make it work with SSR, a small amount of configuration is required. Add the following to your `vite.config.js` or `vite.config.ts` file. This will ensure that React Spectrum’s CSS can be built properly. Note that packages may need to be removed or added to the config below if using an older or newer version of React Spectrum.
+
+```tsx
+export default defineConfig({
+  ssr: {
+    noExternal: [
+      '@adobe/react-spectrum',
+      '@react-spectrum/actionbar',
+      '@react-spectrum/actiongroup',
+      // add more @react-spectrum/<name> packages, such as:
+      //
+      // * @react-spectrum/avatar
+      // * @react-spectrum/badge
+      // * ...
+
+      '@spectrum-icons/illustrations',
+      // add more @spectrum-icons/<name> packages, such as:
+      //
+      // * @spectrum-icons/ui
+      // * ...
+    ]
+  }
+});
+```
